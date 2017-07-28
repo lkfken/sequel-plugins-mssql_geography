@@ -15,6 +15,16 @@ module Sequel
         attr_reader :geolocation_field
         Plugins.inherited_instance_variables(self, :geolocation_field => nil)
         Sequel::Plugins.def_dataset_methods(self, :near)
+
+        # Constructs a geography instance representing a Point instance from its latitude and longitude values and
+        # a spatial reference ID (SRID).
+        def point(latitude, longitude, srid: 4326)
+          st_point = <<~sql
+            DECLARE @point geography = geography::STPointFromText('POINT(#{longitude} #{latitude})', #{srid});
+            SELECT @point as point;
+          sql
+          db.fetch(st_point).first[:point]
+        end
       end
 
       module DatasetMethods
