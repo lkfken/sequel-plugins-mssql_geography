@@ -27,6 +27,10 @@ module Sequel
           sql
           db.fetch(st_point).first[:point]
         end
+
+        def point_lit(latitude, longitude, srid: 4326)
+          Sequel.lit("geography::STPointFromText('POINT(#{longitude} #{latitude})', #{srid})")
+        end
       end
 
       module DatasetMethods
