@@ -1,3 +1,5 @@
+# encoding: UTF-8
+
 require "sequel/plugins/mssql_geography/version"
 
 module Sequel
